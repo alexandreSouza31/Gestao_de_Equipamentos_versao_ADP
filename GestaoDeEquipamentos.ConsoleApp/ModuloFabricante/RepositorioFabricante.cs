@@ -2,8 +2,8 @@
 
 public class RepositorioFabricante
 {
-    public Fabricante[] fabricantes = new Fabricante[100];
-    public int contadorFabricantes = 0;
+    private Fabricante[] fabricantes = new Fabricante[100];
+    private int contadorFabricantes = 0;
 
     public void CadastrarFabricante(Fabricante novoFabricante)
     {
@@ -25,7 +25,6 @@ public class RepositorioFabricante
 
         return true;
     }
-
 
     public bool ExcluirFabricante(int idSelecionado)
     {
