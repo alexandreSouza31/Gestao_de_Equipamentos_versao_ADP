@@ -7,45 +7,12 @@ public class TelaFabricante : TelaBase
 {
     private RepositorioFabricante repositorioFabricante;
 
-    public TelaFabricante(RepositorioFabricante repositorioFabricante) : base("Fabricante")
+    public TelaFabricante(RepositorioFabricante repositorioFabricante) 
+        : base("Fabricante", repositorioFabricante)
     {
         this.repositorioFabricante = repositorioFabricante;
     }
-
-    public void CadastrarRegistro()
-    {
-        ExibirCabecalho();
-
-        Console.WriteLine("Cadastro de Fabricantes");
-
-        Console.WriteLine();
-
-        Fabricante novoFabricante = ObterDados();
-
-        string erros = novoFabricante.Validar();
-
-        if (erros.Length > 0)
-        {
-            Console.WriteLine();
-
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(erros);
-            Console.ResetColor();
-
-            Console.Write("\nDigite ENTER para continuar...");
-            Console.ReadLine();
-
-            CadastrarRegistro();
-
-            return;
-        }
-
-        repositorioFabricante.CadastrarRegistro(novoFabricante);
-
-        Console.WriteLine($"\nFabricante \"{novoFabricante.nome}\" cadastrado com sucesso!");
-        Console.ReadLine();
-    }
-
+    
     public void EditarRegistro()
     {
         ExibirCabecalho();
@@ -122,7 +89,7 @@ public class TelaFabricante : TelaBase
         Console.ReadLine();
     }
 
-    private Fabricante ObterDados()
+    protected override Fabricante ObterDados()
     {
         Console.Write("Digite o nome do fabricante: ");
         string nome = Console.ReadLine();

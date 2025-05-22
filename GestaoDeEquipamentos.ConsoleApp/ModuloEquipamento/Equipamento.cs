@@ -23,7 +23,7 @@ public class Equipamento : EntidadeBase
         this.dataFabricacao = equipamentoAtualizado.dataFabricacao;
     }
 
-    public string Validar()
+    public override string Validar()
     {
         string erros = "";
 

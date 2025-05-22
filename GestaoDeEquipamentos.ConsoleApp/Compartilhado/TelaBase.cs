@@ -1,12 +1,16 @@
-﻿namespace GestaoDeEquipamentos.ConsoleApp.Compartilhado;
+﻿using GestaoDeEquipamentos.ConsoleApp.ModuloFabricante;
+
+namespace GestaoDeEquipamentos.ConsoleApp.Compartilhado;
 
 public abstract class TelaBase
 {
-    private string nomeEntidade;
+    protected string nomeEntidade;
+    protected RepositorioBase repositorio;
 
-    protected TelaBase(string nomeEntidade)
+    protected TelaBase(string nomeEntidade, RepositorioBase repositorio)
     {
         this.nomeEntidade = nomeEntidade;
+        this.repositorio = repositorio;
     }
 
     public char ApresentarMenu()
@@ -27,10 +31,45 @@ public abstract class TelaBase
         return opcaoEscolhida;
     }
 
+    public void CadastrarRegistro()
+    {
+        ExibirCabecalho();
+
+        Console.WriteLine($"Cadastro de {nomeEntidade}");
+
+        Console.WriteLine();
+
+        EntidadeBase novoRegistro = ObterDados();
+
+        string erros = novoRegistro.Validar();
+
+        if (erros.Length > 0)
+        {
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(erros);
+            Console.ResetColor();
+
+            Console.Write("\nDigite ENTER para continuar...");
+            Console.ReadLine();
+
+            CadastrarRegistro();
+
+            return;
+        }
+
+        repositorio.CadastrarRegistro(novoRegistro);
+
+        Console.WriteLine($"\n{nomeEntidade} cadastrado com sucesso!");
+        Console.ReadLine();
+    }
+
     protected void ExibirCabecalho()
     {
         Console.Clear();
-        Console.WriteLine($"Gestão de {nomeEntidade}");
+        Console.WriteLine($"Gestão de {nomeEntidade}s");
         Console.WriteLine();
     }
+    protected abstract EntidadeBase ObterDados();
 }
