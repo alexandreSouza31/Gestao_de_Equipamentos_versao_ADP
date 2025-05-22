@@ -1,6 +1,5 @@
 ﻿
 using GestaoDeEquipamentos.ConsoleApp.Compartilhado;
-using GestaoDeEquipamentos.ConsoleApp.ModuloEquipamento;
 
 namespace GestaoDeEquipamentos.ConsoleApp.ModuloFabricante;
 
@@ -8,9 +7,9 @@ public class TelaFabricante
 {
     private RepositorioFabricante repositorioFabricante;
 
-    public TelaFabricante(RepositorioFabricante repositorioF)
+    public TelaFabricante(RepositorioFabricante repositorioFabricante)
     {
-        repositorioFabricante = repositorioF;
+        this.repositorioFabricante = repositorioFabricante;
     }
 
     public char ApresentarMenu()

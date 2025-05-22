@@ -6,8 +6,14 @@ namespace GestaoDeEquipamentos.ConsoleApp.ModuloChamado;
 
 public class TelaChamado
 {
-    public RepositorioEquipamento repositorioEquipamento;
-    public RepositorioChamado repositorioChamado;
+    private RepositorioChamado repositorioChamado;
+    private RepositorioEquipamento repositorioEquipamento;
+
+    public TelaChamado(RepositorioChamado repositorioChamado, RepositorioEquipamento repositorioEquipamento)
+    {
+        this.repositorioChamado = repositorioChamado;
+        this.repositorioEquipamento = repositorioEquipamento;
+    }
 
     public void ExibirCabecalho()
     {
@@ -44,7 +50,7 @@ public class TelaChamado
 
         Chamado chamado = ObterDados();
 
-        repositorioChamado.CadastrarChamado(chamado);
+        repositorioChamado.CadastrarRegistro(chamado);
 
         Console.WriteLine($"\nChamado \"{chamado.titulo}\" cadastrado com sucesso!");
         Console.ReadLine();
@@ -67,7 +73,7 @@ public class TelaChamado
 
         Chamado chamadoAtualizado = ObterDados();
 
-        bool conseguiuEditar = repositorioChamado.EditarChamado(idSelecionado, chamadoAtualizado);
+        bool conseguiuEditar = repositorioChamado.EditarRegistro(idSelecionado, chamadoAtualizado);
 
         if (!conseguiuEditar)
         {
@@ -96,7 +102,7 @@ public class TelaChamado
 
         Console.WriteLine();
 
-        bool conseguiuExcluir = repositorioChamado.ExcluirChamado(idSelecionado);
+        bool conseguiuExcluir = repositorioChamado.ExcluirRegistro(idSelecionado);
 
         if (!conseguiuExcluir)
         {
@@ -124,11 +130,11 @@ public class TelaChamado
             "Id", "Título", "Descrição", "Data de Abertura", "Equipamento"
         );
 
-        Chamado[] chamados = repositorioChamado.SelecionarChamados();
+        EntidadeBase[] chamados = repositorioChamado.SelecionarRegistros();
 
         for (int i = 0; i < chamados.Length; i++)
         {
-            Chamado c = chamados[i];
+            Chamado c = (Chamado)chamados[i];
 
             if (c == null)
                 continue;
