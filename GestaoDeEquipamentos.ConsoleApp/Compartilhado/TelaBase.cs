@@ -1,58 +1,63 @@
-﻿using GestaoDeEquipamentos.ConsoleApp.ModuloFabricante;
+﻿namespace GestaoDeEquipamentos.ConsoleApp.Compartilhado;
 
-namespace GestaoDeEquipamentos.ConsoleApp.Compartilhado;
-
-public abstract class TelaBase
+public abstract class TelaBase<T> where T : EntidadeBase<T>
 {
     protected string nomeEntidade;
-    protected RepositorioBase repositorio;
+    private RepositorioBase<T> repositorio;
 
-    protected TelaBase(string nomeEntidade, RepositorioBase repositorio)
+    protected TelaBase(string nomeEntidade, RepositorioBase<T> repositorio)
     {
         this.nomeEntidade = nomeEntidade;
         this.repositorio = repositorio;
     }
 
-    public char ApresentarMenu()
+    public void ExibirCabecalho()
     {
-        ExibirCabecalho();
-
-        Console.WriteLine($"1 - Cadastro de {nomeEntidade}");
-        Console.WriteLine($"2 - Visualizar {nomeEntidade}s");
-        Console.WriteLine($"3 - Editar {nomeEntidade}");
-        Console.WriteLine($"4 - Excluir {nomeEntidade}");
-        Console.WriteLine($"S - Sair");
-
-        Console.WriteLine();
-
-        Console.Write("Digite uma opção válida: ");
-        char opcaoEscolhida = Console.ReadLine().ToUpper()[0];
-
-        return opcaoEscolhida;
+        Console.Clear();
+        Console.WriteLine("--------------------------------------------");
+        Console.WriteLine($"Controle de {nomeEntidade}s");
+        Console.WriteLine("--------------------------------------------");
     }
 
-    public void CadastrarRegistro()
+    public virtual char ApresentarMenu()
     {
         ExibirCabecalho();
 
-        Console.WriteLine($"Cadastro de {nomeEntidade}");
+        Console.WriteLine();
+
+        Console.WriteLine($"1 - Cadastrar {nomeEntidade}");
+        Console.WriteLine($"2 - Editar {nomeEntidade}");
+        Console.WriteLine($"3 - Excluir {nomeEntidade}");
+        Console.WriteLine($"4 - Visualizar {nomeEntidade}s");
+
+        Console.WriteLine("S - Voltar");
 
         Console.WriteLine();
 
-        EntidadeBase novoRegistro = ObterDados();
+        Console.Write("Escolha uma das opções: ");
+        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!);
+
+        return operacaoEscolhida;
+    }
+
+    public virtual void CadastrarRegistro()
+    {
+        ExibirCabecalho();
+
+        Console.WriteLine();
+
+        Console.WriteLine($"Cadastrando {nomeEntidade}...");
+        Console.WriteLine("--------------------------------------------");
+
+        Console.WriteLine();
+
+        T novoRegistro = ObterDados();
 
         string erros = novoRegistro.Validar();
 
         if (erros.Length > 0)
         {
-            Console.WriteLine();
-
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(erros);
-            Console.ResetColor();
-
-            Console.Write("\nDigite ENTER para continuar...");
-            Console.ReadLine();
+            ApresentarMensagem(erros, ConsoleColor.Red);
 
             CadastrarRegistro();
 
@@ -61,62 +66,92 @@ public abstract class TelaBase
 
         repositorio.CadastrarRegistro(novoRegistro);
 
-        Console.WriteLine($"\n{nomeEntidade} cadastrado com sucesso!");
-        Console.ReadLine();
+        ApresentarMensagem("O registro foi concluído com sucesso!", ConsoleColor.Green);
     }
 
-    public void EditarRegistro()
+    public virtual void EditarRegistro()
     {
         ExibirCabecalho();
 
-        Console.WriteLine($"Edição de {nomeEntidade}");
+        Console.WriteLine($"Editando {nomeEntidade}...");
+        Console.WriteLine("----------------------------------------");
 
         Console.WriteLine();
 
         VisualizarRegistros(false);
 
-        Console.Write("Digite o id do registro que deseja selecionar: ");
-        int idSelecionado = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Digite o ID do registro que deseja selecionar: ");
+        int idRegistro = Convert.ToInt32(Console.ReadLine());
 
         Console.WriteLine();
 
-        EntidadeBase registroAtualizado = ObterDados();
+        T registroEditado = ObterDados();
 
-        repositorio.EditarRegistro(idSelecionado, registroAtualizado);
+        string erros = registroEditado.Validar();
 
-        Console.WriteLine($"\n{nomeEntidade} editado com sucesso!");
-        Console.ReadLine();
+        if (erros.Length > 0)
+        {
+            ApresentarMensagem(erros, ConsoleColor.Red);
+
+            EditarRegistro();
+
+            return;
+        }
+
+        bool conseguiuEditar = repositorio.EditarRegistro(idRegistro, registroEditado);
+
+        if (!conseguiuEditar)
+        {
+            ApresentarMensagem("Houve um erro durante a edição do registro...", ConsoleColor.Red);
+
+            return;
+        }
+
+        ApresentarMensagem("O registro foi editado com sucesso!", ConsoleColor.Green);
     }
 
-    public void ExcluirRegistro()
+    public virtual void ExcluirRegistro()
     {
         ExibirCabecalho();
 
-        Console.WriteLine($"Exclusão de {nomeEntidade}");
+        Console.WriteLine($"Excluindo {nomeEntidade}...");
+        Console.WriteLine("----------------------------------------");
 
         Console.WriteLine();
 
         VisualizarRegistros(false);
 
-        Console.Write("Digite o id do registro que deseja selecionar: ");
-        int idSelecionado = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Digite o ID do registro que deseja selecionar: ");
+        int idRegistro = Convert.ToInt32(Console.ReadLine());
 
         Console.WriteLine();
 
-        repositorio.ExcluirRegistro(idSelecionado);
+        bool conseguiuExcluir = repositorio.ExcluirRegistro(idRegistro);
 
-        Console.WriteLine($"\n{nomeEntidade} excluído com sucesso!");
+        if (!conseguiuExcluir)
+        {
+            ApresentarMensagem("Houve um erro durante a exclusão do registro...", ConsoleColor.Red);
+
+            return;
+        }
+
+        ApresentarMensagem("O registro foi excluído com sucesso!", ConsoleColor.Green);
+    }
+
+    public abstract void VisualizarRegistros(bool exibirTitulo);
+
+    protected abstract T ObterDados();
+
+    protected void ApresentarMensagem(string mensagem, ConsoleColor cor)
+    {
+        Console.ForegroundColor = cor;
+
+        Console.WriteLine();
+
+        Console.WriteLine(mensagem);
+
+        Console.ResetColor();
+
         Console.ReadLine();
     }
-
-    public abstract void VisualizarRegistros(bool exibirCabecalho);
-
-    protected void ExibirCabecalho()
-    {
-        Console.Clear();
-        Console.WriteLine($"Gestão de {nomeEntidade}s");
-        Console.WriteLine();
-    }
-
-    protected abstract EntidadeBase ObterDados();
 }
