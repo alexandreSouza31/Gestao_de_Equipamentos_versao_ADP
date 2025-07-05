@@ -7,6 +7,17 @@
 
 <a href="/Fabricante/Cadastrar">Cadastrar Fabricante</a>
 
-@* <ul>
-    <li>exemplo</li>
-</ul> *@
+@if (Model != null && Model.Count > 0)
+{
+    <h3>Nome| Email | Telefone</h3>
+    <ul>
+        @foreach(Fabricante f in Model)
+        {
+            <li>@f.Nome | @f.Email | @f.Telefone</li>
+        }
+    </ul>
+}
+else
+{
+    <h2>Ainda não há Fabricantes!</h2>
+}
