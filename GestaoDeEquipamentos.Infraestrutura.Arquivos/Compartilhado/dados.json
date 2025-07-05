@@ -1,0 +1,23 @@
+{
+  "$id": "1",
+  "Fabricantes": {
+    "$id": "2",
+    "$values": [
+      {
+        "$id": "3",
+        "Nome": "Alexandre",
+        "Email": "alexandre31_m@hotmail.com",
+        "Telefone": "63991055089",
+        "Id": 1
+      }
+    ]
+  },
+  "Equipamentos": {
+    "$id": "4",
+    "$values": []
+  },
+  "Chamados": {
+    "$id": "5",
+    "$values": []
+  }
+}

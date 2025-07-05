@@ -12,7 +12,7 @@ public class ContextoDados
     public List<Equipamento> Equipamentos { get; set; }
     public List<Chamado> Chamados { get; set; }
 
-    private string pastaArmazenamento = "C:\\temp";
+    private string pastaArmazenamento = "D:\\0-Academia_do_Programador\\1_backend\\atividades\\Gestão de Equipamentos ADP\\GestaoDeEquipamentos.Infraestrutura.Arquivos\\Compartilhado";
     private string arquivoArmazenamento = "dados.json";
 
     public ContextoDados()
