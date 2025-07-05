@@ -1,0 +1,1 @@
+# Gestao_de_Equipamentos_versao_ADP
