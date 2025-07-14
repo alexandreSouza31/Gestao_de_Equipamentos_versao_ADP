@@ -68,13 +68,9 @@ public class FabricanteController : Controller
 
     public IActionResult Excluir(int id)
     {
-        Fabricante fabricanteSelecionado = repositorioFabricante.SelecionarRegistroPorId(id);
-
-        if (fabricanteSelecionado == null)
-            return RedirectToAction(nameof(Index));
-
-        return View(fabricanteSelecionado);
+        return SelecionarFabricante(id);
     }
+
 
     [HttpPost]
     public IActionResult ExcluirConfirmado(int id)
@@ -82,5 +78,15 @@ public class FabricanteController : Controller
         repositorioFabricante.ExcluirRegistro(id);
 
         return RedirectToAction(nameof(Index));
+    }
+
+    private IActionResult SelecionarFabricante(int id)
+    {
+        Fabricante fabricanteSelecionado = repositorioFabricante.SelecionarRegistroPorId(id);
+
+        if (fabricanteSelecionado == null)
+            return RedirectToAction(nameof(Index));
+
+        return View(fabricanteSelecionado);
     }
 }
