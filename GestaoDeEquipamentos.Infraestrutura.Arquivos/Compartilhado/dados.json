@@ -9,15 +9,34 @@
         "Email": "kibon@hotmail.com",
         "Telefone": "2132152030",
         "Id": 2
+      },
+      {
+        "$id": "4",
+        "Nome": "Creme \u0026 Mel",
+        "Email": "cremeemel@email.com",
+        "Telefone": "6332114000",
+        "Id": 1
       }
     ]
   },
   "Equipamentos": {
-    "$id": "4",
-    "$values": []
+    "$id": "5",
+    "$values": [
+      {
+        "$id": "6",
+        "Nome": "Magnum",
+        "PrecoAquisicao": 6,
+        "NumeroSerie": null,
+        "Fabricante": {
+          "$ref": "4"
+        },
+        "DataFabricacao": "2025-07-14T00:00:00",
+        "Id": 1
+      }
+    ]
   },
   "Chamados": {
-    "$id": "5",
+    "$id": "7",
     "$values": []
   }
 }
