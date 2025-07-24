@@ -37,6 +37,17 @@
   },
   "Chamados": {
     "$id": "7",
-    "$values": []
+    "$values": [
+      {
+        "$id": "8",
+        "Titulo": "troca de picol\u00E9 avariado",
+        "Descricao": "                \r\n            Ao conferir a mercadoria foi percebido que o picol\u00E9 veio mal formado, como se tivesse descongelado e congelado novamente.",
+        "DataAbertura": "2025-07-24T00:00:00",
+        "Equipamento": {
+          "$ref": "6"
+        },
+        "Id": 1
+      }
+    ]
   }
 }
